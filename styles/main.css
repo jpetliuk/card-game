@@ -1,0 +1,87 @@
+@import url("./game.css");
+
+:root {
+  --arcade-color-primary: #211818;
+  --arcade-color-secundary: #ffeb55;
+  --arcade-color-secundary-dark: #8e8228;
+  --background-color: #111010;
+  --screen-color: #121342;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  background-color: var(--background-color);
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 11px;
+}
+
+/* Arcade machine style */
+#arcade-machine {
+  height: 100vh;
+  width: 1000px;
+  margin: auto;
+  background-color: transparent;
+  position: relative;
+  margin-top: 10px;
+}
+
+/* Top of arcade machine */
+#arcade-machine-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 900px;
+  height: 550px;
+  margin: 0 auto;
+  background-color: var(--arcade-color-primary);
+}
+
+/* Middle of arcade machine */
+#arcade-machine-middle {
+  position: absolute;
+  top: 550px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 900px;
+  height: 50px;
+  background-color: var(--arcade-color-primary);
+  border-top: 2px solid black;
+}
+
+.arcade-machine-triangle {
+  height: 50px;
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  background-color: var(--arcade-color-primary);
+}
+
+#arcade-machine-triangle-left {
+  position: absolute;
+  width: 50px;
+  left: -50px;
+  transform: rotateY(180deg);
+}
+
+#arcade-machine-triangle-right {
+  position: absolute;
+  width: 53px;
+  right: -53px;
+}
+
+/* Bottom of arcade machine */
+#arcade-machine-bottom {
+  position: absolute;
+  top: 600px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 100%;
+  height: 20vh;
+  background-color: var(--arcade-color-primary);
+  border: 2px solid black;
+}

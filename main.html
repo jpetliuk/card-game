@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <div id="arcade-machine">
+      <div id="arcade-machine-top">
+        <div id="game">
+          <div id="health">Health: 🤍 🤍 ♡</div>
+          <div id="gasoline">Fuel: 🛢️ 🛢️ 🛢️</div>
+          <div id="coins" class="control">Coins: 🌕 23</div>
+          <div class class="control" id="weapons"></div>
+          <div class="control" id="achievements">
+            <div class="achievement" id="achievement-1">1</div>
+            <div class="achievement" id="achievement-2">2</div>
+            <div class="achievement" id="achievement-3">3</div>
+            <div class="achievement" id="achievement-4">4</div>
+          </div>
+          <div id="screen" class="screen">
+            <div class="welcome">
+              <h2>Welcome to...</h2>
+              <button type="button" id="start">Start</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="arcade-machine-middle">
+        <div
+          class="arcade-machine-triangle"
+          id="arcade-machine-triangle-right"
+        ></div>
+        <div
+          class="arcade-machine-triangle"
+          id="arcade-machine-triangle-left"
+        ></div>
+        <div id="amrcade-machine-objects">
+          <div id="amrcade-machine-buttons"></div>
+          <div id="amrcade-machine-levers"></div>
+        </div>
+      </div>
+      <div id="arcade-machine-bottom">
+        <div id="amrcade-machine-image"></div>
+      </div>
+    </div>
+    <script type="module" src="./js/logic.js"></script>
+  </body>
+</html>

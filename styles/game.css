@@ -1,0 +1,96 @@
+#game {
+  position: relative;
+  top: 40px;
+  margin: 0 auto;
+  width: 810px;
+  height: 410px;
+  background-color: var(--screen-color);
+  border-top: 2px solid var(--arcade-color-secundary);
+  border-left: 5px solid var(--arcade-color-secundary-dark);
+  border-right: 5px solid var(--arcade-color-secundary-dark);
+  border-bottom: 10px solid var(--arcade-color-secundary);
+  color: antiquewhite;
+}
+
+#health {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+#gasoline {
+  position: absolute;
+  top: 40px;
+  left: 20px;
+}
+
+#coins {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  text-align: center;
+}
+
+#weapons {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  text-align: center;
+}
+
+#achievements {
+  position: absolute;
+  bottom: -85px;
+  right: 50px;
+  text-align: center;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 30px;
+}
+
+.achievement {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background-color: var(--arcade-color-secundary);
+}
+
+#screen {
+  position: absolute;
+  margin: auto;
+  margin-top: 65px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 700px;
+  height: 320px;
+  border: 1px solid var(--arcade-color-secundary-dark);
+}
+
+.welcome {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+}
+
+.welcome button {
+  background-color: transparent;
+  border: 2px inset antiquewhite;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-family: "Press Start 2P", system-ui;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: antiquewhite;
+  margin-top: 100px;
+  transition: 100ms;
+}
+
+.welcome button:hover {
+  transition: 100ms;
+  color: var(--arcade-color-secundary);
+  border: 2px inset var(--arcade-color-secundary);
+}
