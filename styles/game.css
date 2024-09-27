@@ -94,3 +94,15 @@
   color: var(--arcade-color-secundary);
   border: 2px inset var(--arcade-color-secundary);
 }
+
+/* #start {
+  position: absolute;
+}
+
+#treasure {
+  position: absolute;
+} */
+
+.red {
+  color: red;
+}

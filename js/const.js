@@ -4,47 +4,17 @@ let coins = 0;
 let weaponIndex = 0;
 let roomIndex;
 
-const achivements = [
-  {
-    name: "Achivement 1",
-    description: "Achivement 1 description",
-    value: 10,
-  },
-  {
-    name: "Achivement 2",
-    description: "Achivement 2 description",
-    value: 10,
-  },
-  {
-    name: "Achivement 3",
-    description: "Achivement 3 description",
-    value: 10,
-  },
-];
+export { health, gasoline, coins, weaponIndex };
 
-// const puzzles = [
-//   {
-//     name: "Puzzle 1",
-//     description: "Puzzle 1 description",
-//     rooms: rooms,
-//   },
-//   {
-//     name: "Puzzle 2",
-//     description: "Puzzle 2 description",
-//     rooms: rooms,
-//   },
-//   {
-//     name: "Puzzle 3",
-//     description: "Puzzle 3 description",
-//     rooms: rooms,
-//   },
-// ];
+// posible functions fro updates;
 
-const mode = [
-  {
-    name: "Mode 1",
-    description: "Mode 1 description",
-    powers: powers,
-  },
-  {},
-];
+function healthCalculator(amount) {
+  health += amount;
+  heartContainer = 0;
+  for (let i = 0; i < health; i += 20) {
+    heartContainer++;
+  }
+  let hearts = "♡🤍 🤍 ♡".repeat(heartContainer);
+  healthBar.innerText = `Health: ${hearts}`;
+  console.log(health);
+}

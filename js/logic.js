@@ -1,48 +1,126 @@
-import { enemyRooms, treasureRooms } from "./rooms.js";
+import { enemyRooms, treasureRooms, bossRooms, deathRoom } from "./rooms.js";
 
-const startButton = document.querySelector("#start");
+// Buttons
+const buttonAction = document.querySelector(".buttonAction");
 
+const roomTitle = document.getElementById("roomTitle");
+const roomText = document.getElementById("roomText");
+const healthBar = document.getElementById("health");
+
+// Variables for rooms
+let roomProperties = {};
 let enemiesIndex = 0;
-let enemyRoom = true;
+let bossIndex = 0;
+let floor = 0;
 
-startButton.onclick = coldDown;
+// Variables for player
+let health = 100;
+let weaponDamage = 20;
+let currentEnemyHealth;
+let areYouDeath = false;
+
+// CooldDown
+buttonAction.onclick = coldDown;
 
 function coldDown() {
-  startButton.disabled = true;
+  buttonAction.disabled = true;
   setTimeout(function () {
-    roomGenerator();
-    startButton.disabled = false;
-  }, 500);
+    buttonActions();
+    buttonAction.disabled = false;
+  }, 400);
 }
 
-function probability(enemiesIndex) {
-  let probability = Math.floor(Math.random() * 10) + 1 + enemiesIndex;
-
-  return probability;
+// Checks the buttons id to run the right function
+function buttonActions() {
+  switch (buttonAction.id) {
+    case "newGame":
+      newGame();
+      break;
+    case "attack":
+      attack();
+      break;
+    case "treasure":
+      treasure();
+      break;
+    case "restart":
+      newGame();
+      break;
+  }
 }
 
-function enemyRoomGenerator(params) {
-  console.log(params);
-}
-
-function treasureRoomGenerator(params) {
-  console.log(params);
-}
-
+// Calculates what next Room will be
 function roomGenerator() {
-  let nextRoom = probability(enemiesIndex);
+  let nextRoomRandom = Math.floor(Math.random() * 10);
+  let roomIndexRandom = Math.floor(Math.random() * 5);
 
-  if (nextRoom <= 9) {
+  if (bossIndex === 10) {
+    // Generate boss room
+    bossIndex = 0;
+    updateRoom(bossRooms, floor);
+    floor++;
+  } else if (nextRoomRandom <= 9 - enemiesIndex) {
     // Generate enemy room
-    enemiesIndex++; // Increment the enemy index
-    enemyRoom = true;
-    let randomizer = Math.floor(Math.random() * 5); // 5 opciones
-    treasureRoomGenerator(treasureRooms[randomizer]);
+    enemiesIndex++;
+    bossIndex++;
+    updateRoom(enemyRooms, roomIndexRandom);
   } else {
     // Generate treasure room
-    enemiesIndex = 0; // Reset the index if needed
-    enemyRoom = false;
-    let randomizer = Math.floor(Math.random() * 5);
-    enemyRoomGenerator(enemyRooms[randomizer]);
+    enemiesIndex = 0;
+    updateRoom(treasureRooms, roomIndexRandom);
+  }
+}
+
+function updateRoom(obj, index) {
+  roomProperties = obj[index];
+  currentEnemyHealth = roomProperties.enemyHealth;
+
+  roomTitle.innerHTML = roomProperties.name;
+  roomText.innerHTML = roomProperties.text;
+  buttonAction.innerText = roomProperties.buttonText;
+  buttonAction.id = roomProperties.buttonText;
+}
+
+function treasure() {
+  healthCalculator(10);
+}
+
+// if you die new game
+function newGame() {
+  // reset room variables
+  enemiesIndex = 0;
+  bossIndex = 0;
+  floor = 0;
+
+  // reset player variables
+  health = 100;
+  weaponDamage = 20;
+
+  // reset UI
+  healthBar.innerText = `Health: ${health}`;
+  healthBar.classList.remove("red");
+
+  roomGenerator();
+}
+
+// continue to next room
+function nextRoom(params) {}
+
+function attack() {
+  healthCalculator(-roomProperties.damage);
+}
+
+function healthCalculator(amount) {
+  health += amount;
+
+  if (health <= 0) {
+    healthBar.innerText = "Health: ---";
+    // Generate death room
+    updateRoom(deathRoom, 0);
+  } else if (health <= 30) {
+    healthBar.classList.add("red");
+    healthBar.innerText = `Health: ${health}`;
+  } else {
+    healthBar.classList.remove("red");
+    healthBar.innerText = `Health: ${health}`;
   }
 }
