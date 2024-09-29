@@ -17,7 +17,7 @@
   top: 20px;
   left: 20px;
 }
-#gasoline {
+#fuel {
   position: absolute;
   top: 40px;
   left: 20px;
@@ -65,6 +65,7 @@
   width: 700px;
   height: 320px;
   border: 1px solid var(--arcade-color-secundary-dark);
+  overflow: hidden;
 }
 
 .welcome {
@@ -87,6 +88,7 @@
   color: antiquewhite;
   margin-top: 100px;
   transition: 100ms;
+  width: fit-content;
 }
 
 .welcome button:hover {
@@ -105,4 +107,17 @@
 
 .red {
   color: red;
+}
+
+#treasureContinue {
+  position: absolute;
+  bottom: -300px;
+  margin-right: 5px;
+}
+
+#buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }

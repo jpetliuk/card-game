@@ -6,22 +6,12 @@ const enemyRooms = [
     enemyHealth: 30,
     damage: 10,
     buttonText: "attack",
-  },
-  {
-    name: "wolf",
-    text: "hello wolfy",
-    type: "enemy",
-    enemyHealth: 30,
-    damage: 10,
-    buttonText: "attack",
-  },
-  {
-    name: "wild boar",
-    text: "hello piggy",
-    type: "enemy",
-    enemyHealth: 30,
-    damage: 10,
-    buttonText: "attack",
+    drops: {
+      coins: {
+        min: 0,
+        max: 4,
+      },
+    },
   },
   {
     name: "snake",
@@ -30,6 +20,45 @@ const enemyRooms = [
     enemyHealth: 30,
     damage: 10,
     buttonText: "attack",
+    drops: {
+      coins: {
+        min: 1,
+        max: 6,
+      },
+    },
+  },
+  {
+    name: "wolf",
+    text: "hello wolfy",
+    type: "enemy",
+    enemyHealth: 30,
+    damage: 10,
+    buttonText: "attack",
+    drops: {
+      coins: {
+        min: 5,
+        max: 10,
+      },
+      keys: 10,
+    },
+  },
+  {
+    name: "wild boar",
+    text: "hello piggy",
+    type: "enemy",
+    enemyHealth: 30,
+    damage: 10,
+    buttonText: "attack",
+    drops: {
+      coins: {
+        min: 10,
+        max: 15,
+      },
+      fuel: {
+        min: 0,
+        max: 1,
+      },
+    },
   },
   {
     name: "bear",
@@ -38,6 +67,16 @@ const enemyRooms = [
     enemyHealth: 30,
     damage: 10,
     buttonText: "attack",
+    drops: {
+      coins: {
+        min: 15,
+        max: 25,
+      },
+      fuel: {
+        min: 0,
+        max: 2,
+      },
+    },
   },
 ];
 
@@ -47,30 +86,35 @@ const treasureRooms = [
     text: "hello crabby",
     type: "treasure",
     buttonText: "treasure",
+    coinCost: 10,
   },
   {
     name: "puzzle",
     text: "hello crabby",
     type: "treasure",
     buttonText: "treasure",
+    coinCost: 10,
   },
   {
     name: "stange fruit",
     text: "hello crabby",
     type: "treasure",
     buttonText: "treasure",
+    coinCost: 10,
   },
   {
     name: "shop",
     text: "hello crabby",
     type: "treasure",
     buttonText: "treasure",
+    coinCost: 10,
   },
   {
     name: "blacksmith",
     text: "hello crabby",
     type: "treasure",
     buttonText: "treasure",
+    coinCost: 10,
   },
 ];
 
@@ -107,6 +151,12 @@ const deathRoom = [
     text: "you died",
     type: "death",
     buttonText: "restart",
+  },
+  {
+    name: "You defeated ",
+    text: "You acquired ",
+    type: "continue",
+    buttonText: "continue",
   },
 ];
 

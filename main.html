@@ -17,11 +17,11 @@
     <div id="arcade-machine">
       <div id="arcade-machine-top">
         <div id="game">
-          <div id="health">Health: ---</div>
-          <div id="gasoline">Fuel: 🛢️ 🛢️ 🛢️</div>
-          <div id="coins" class="control">Coins: 🌕 23</div>
-          <div class class="control" id="weapons"></div>
-          <div class="control" id="achievements">
+          <div id="health"></div>
+          <div id="fuel"></div>
+          <div id="coins"></div>
+          <div class id="weapons"></div>
+          <div id="achievements">
             <div class="achievement" id="achievement-1">1</div>
             <div class="achievement" id="achievement-2">2</div>
             <div class="achievement" id="achievement-3">3</div>
@@ -31,9 +31,18 @@
             <div class="welcome" id="startRoom">
               <h2 id="roomTitle">Welcome to...</h2>
               <p id="roomText"></p>
-              <button class="buttonAction" type="button" id="newGame">
-                Start
-              </button>
+              <div id="buttons">
+                <button class="buttonAction" type="button" id="newGame">
+                  Start
+                </button>
+                <button
+                  class="buttonAction2"
+                  type="button"
+                  id="treasureContinue"
+                >
+                  Continue
+                </button>
+              </div>
             </div>
           </div>
         </div>

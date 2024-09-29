@@ -1,20 +1,29 @@
-let health = 100;
-let gasoline = 100;
-let coins = 0;
-let weaponIndex = 0;
-let roomIndex;
+// Buttons
+const buttonAction = document.querySelector(".buttonAction");
+const buttonAction2 = document.querySelector(".buttonAction2");
 
-export { health, gasoline, coins, weaponIndex };
+const roomTitle = document.getElementById("roomTitle");
+const roomText = document.getElementById("roomText");
+const healthBar = document.getElementById("health");
+const coinsDisplayer = document.getElementById("coins");
+const fuelDisplayer = document.getElementById("fuel");
 
-// posible functions fro updates;
+// Consts
+const initialHealth = 100;
+const initialCoins = 0;
+const initialFuel = 1;
+const initialWeaponDamage = 30;
 
-function healthCalculator(amount) {
-  health += amount;
-  heartContainer = 0;
-  for (let i = 0; i < health; i += 20) {
-    heartContainer++;
-  }
-  let hearts = "♡🤍 🤍 ♡".repeat(heartContainer);
-  healthBar.innerText = `Health: ${hearts}`;
-  console.log(health);
-}
+export {
+  buttonAction,
+  buttonAction2,
+  roomTitle,
+  roomText,
+  healthBar,
+  coinsDisplayer,
+  fuelDisplayer,
+  initialHealth,
+  initialCoins,
+  initialFuel,
+  initialWeaponDamage,
+};
