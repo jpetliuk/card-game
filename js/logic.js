@@ -23,6 +23,7 @@ let enemiesIndex = 0;
 let floor = 0;
 let roomDrops = "";
 let bossIndex;
+let damageRecived;
 
 // Variables for player
 let health;
@@ -42,7 +43,7 @@ function handleCooldown(event) {
   setTimeout(() => {
     buttonActions(button);
     button.disabled = false;
-  }, 500);
+  }, 200);
 }
 
 // Checks the buttons id to run the right function
@@ -89,7 +90,9 @@ function newGame() {
 
 // --- ROOM GENERATOR LOGIC ---
 function roomGenerator() {
-  if (bossIndex === 10) {
+  if (floor === 5) {
+    youWon();
+  } else if (bossIndex === 10) {
     /* Generate boss room */
     generateBossRoom();
   } else {
@@ -101,7 +104,7 @@ function roomGenerator() {
 
 function enemy_treasure_ration() {
   let roomTypeRandom = Math.floor(Math.random() * 10); /* 0-9 */
-  let luck = 7;
+  let luck = 9;
 
   return roomTypeRandom < luck - enemiesIndex ? "enemy" : "treasure";
 }
@@ -109,10 +112,12 @@ function enemy_treasure_ration() {
 function generateBossRoom() {
   updateRoom(bossRooms, floor);
   bossIndex = 0;
+  enemiesIndex += 5;
   floor++;
 }
 
 function generateTreasureRoom() {
+  bossIndex++;
   enemiesIndex = 0;
   updateRoom(treasureRooms, selectRandomElementOfObject(treasureRooms));
 }
@@ -120,7 +125,9 @@ function generateTreasureRoom() {
 function generateEnemyRoom() {
   enemiesIndex++;
   bossIndex++;
-  updateRoom(enemyRooms, selectRandomElementOfObject(enemyRooms));
+  let randomIndex = Math.floor(Math.random() * 2) + floor;
+
+  updateRoom(enemyRooms, randomIndex);
 }
 
 function selectRandomElementOfObject(obj) {
@@ -146,32 +153,59 @@ function updateButton2_Dispay(obj) {
     if (totalCoins < roomProperties.coinCost) {
       buttonAction.classList.add("gray");
     }
-  } else if (obj === enemyRooms) {
+  } else if (obj === enemyRooms || obj === bossRooms) {
     updateEnemyHealthDisplayer();
   }
 }
 
 // --- BUTTONS ACTIONS ---
 function attack() {
-  healthCalculator(-roomProperties.damage);
   enemyHealth -= weaponDamage;
 
   if (enemyHealth <= 0 && health > 0) {
     functionDrops();
     continueRoom();
   } else {
+    healthCalculator(roomProperties.damage);
     updateEnemyHealthDisplayer();
+    enemyAttack();
   }
+}
+
+function enemyAttack() {
+  roomText.innerHTML =
+    roomProperties.attackText + `, dealing ${damageRecived} damage!`;
 }
 
 function treasure() {
   if (totalCoins >= roomProperties.coinCost) {
     totalCoins -= roomProperties.coinCost;
-    healthCalculator(10);
+    getTreasure();
     auxiliaryButton();
   } else {
     roomText.innerHTML = roomProperties.unableToGetText;
   }
+}
+
+function getTreasure() {
+  const weapons = ["blacksmith", "puzzle", "shop"];
+  const heals = ["strange fruit", "rabbit", "shop"];
+
+  if (weapons.includes(roomProperties.name)) {
+    upgradeWeapon();
+  }
+
+  if (heals.includes(roomProperties.name)) {
+    consumeHealth();
+  }
+}
+
+function upgradeWeapon() {
+  weaponDamage += roomProperties.weaponUpgrade;
+}
+
+function consumeHealth() {
+  health += roomProperties.heal;
 }
 
 function continueRoom() {
@@ -212,8 +246,12 @@ function dropsProbabilities(obj) {
 
 /* - Health logic - */
 function healthCalculator(amount) {
-  health += amount;
+  let plusMinus = Math.floor(Math.random() * 5) - 2;
+  amount + plusMinus < 0
+    ? (damageRecived = 0)
+    : (damageRecived = amount + plusMinus);
 
+  health -= damageRecived;
   if (health <= 0) {
     updateRoom(deathRoom, 0);
     return;
@@ -231,6 +269,7 @@ function updateUI() {
   roomAndFloor.innerHTML = `Room: ${bossIndex} Floor: ${floor}`;
   coinsDisplayer.innerText = `🌕 ${totalCoins}`;
   fuelDisplayer.innerText = "🛢️ ".repeat(fuel);
+  weaponDisplayer.innerHTML = `<span class="weaponIcon">⚔️</span> ${weaponDamage}`;
 
   healthBar.classList.toggle("red", health <= 30);
   if (health <= 0) {
@@ -241,11 +280,13 @@ function updateUI() {
 }
 
 function updateEnemyHealthDisplayer() {
-  enemyHealthDisplayer.innerText = `enemy health: ${enemyHealth}`;
-
   if (enemyHealth <= 0 || isNaN(enemyHealth)) {
     enemyHealthDisplayer.innerText = "";
+  } else {
+    enemyHealthDisplayer.innerText = `HP: ${enemyHealth}`;
   }
 }
 
-function updateWeaponDisplayer() {}
+function youWon() {
+  updateRoom(deathRoom, 2);
+}

@@ -38,9 +38,13 @@
 
 #weapons {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
+  bottom: 8px;
+  left: 10px;
   text-align: center;
+}
+
+.weaponIcon {
+  font-size: 16px;
 }
 
 #achievements {
@@ -69,7 +73,7 @@
   right: 0;
   bottom: 0;
   width: 700px;
-  height: 320px;
+  height: 310px;
   border: 1px solid var(--arcade-color-secundary-dark);
   overflow: hidden;
 }
@@ -92,7 +96,7 @@
   text-transform: uppercase;
   cursor: pointer;
   color: antiquewhite;
-  margin-top: 100px;
+  margin-top: 60px;
   transition: 100ms;
   width: fit-content;
 }
@@ -127,6 +131,10 @@
 
 #enemyHealth {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: -25px;
+  right: 30px;
+}
+
+#roomText {
+  margin-top: 40px;
 }
