@@ -12,14 +12,17 @@ import {
   initialCoins,
   initialFuel,
   initialWeaponDamage,
+  roomAndFloor,
+  weaponDisplayer,
+  enemyHealthDisplayer,
 } from "./const.js";
 
 // Variables for rooms
 let roomProperties = {};
 let enemiesIndex = 0;
-let bossIndex = 0;
 let floor = 0;
 let roomDrops = "";
+let bossIndex;
 
 // Variables for player
 let health;
@@ -28,16 +31,18 @@ let enemyHealth;
 let totalCoins;
 let fuel;
 
-// CooldDown
-buttonAction.onclick = () => coldDown(buttonAction);
-buttonAction2.onclick = () => coldDown(buttonAction2);
+// Buttons
+const buttons = [buttonAction, buttonAction2];
+buttons.forEach((button) => button.addEventListener("click", handleCooldown));
 
-function coldDown(button) {
+function handleCooldown(event) {
+  const button = event.currentTarget;
   button.disabled = true;
-  setTimeout(function () {
+
+  setTimeout(() => {
     buttonActions(button);
     button.disabled = false;
-  }, 400);
+  }, 500);
 }
 
 // Checks the buttons id to run the right function
@@ -62,50 +67,64 @@ function buttonActions(button) {
       auxiliaryButton();
       break;
   }
+  updateUI();
 }
 
-// --- NEW GAME ---
-function newGame() {
-  /* reset room variables */
+function resetVariables() {
   enemiesIndex = 0;
   bossIndex = 0;
   floor = 0;
 
-  /* reset player variables */
   health = initialHealth;
   totalCoins = initialCoins;
   fuel = initialFuel;
   weaponDamage = initialWeaponDamage;
+}
 
-  /* reset UI */
-  healthBar.innerText = `Health: ${health}`;
-  healthBar.classList.remove("red");
-  coinsDisplayer.innerText = `🌕 ${totalCoins}`;
-  fuelDisplayer.innerText = "🛢️ ".repeat(fuel);
+// --- NEW GAME ---
+function newGame() {
+  resetVariables();
   roomGenerator();
 }
 
 // --- ROOM GENERATOR LOGIC ---
 function roomGenerator() {
-  let nextRoomRandom = Math.floor(Math.random() * 10);
-  let roomIndexRandom = Math.floor(Math.random() * 5);
-
   if (bossIndex === 10) {
     /* Generate boss room */
-    bossIndex = 0;
-    updateRoom(bossRooms, floor);
-    floor++;
-  } else if (nextRoomRandom <= 7 - enemiesIndex) {
-    /* Generate enemy room */
-    enemiesIndex++;
-    bossIndex++;
-    updateRoom(enemyRooms, roomIndexRandom);
+    generateBossRoom();
   } else {
-    /* Generate treasure room */
-    enemiesIndex = 0;
-    buttonAction2.style.position = "static";
-    updateRoom(treasureRooms, roomIndexRandom);
+    enemy_treasure_ration() === "enemy"
+      ? generateEnemyRoom()
+      : generateTreasureRoom();
   }
+}
+
+function enemy_treasure_ration() {
+  let roomTypeRandom = Math.floor(Math.random() * 10); /* 0-9 */
+  let luck = 7;
+
+  return roomTypeRandom < luck - enemiesIndex ? "enemy" : "treasure";
+}
+
+function generateBossRoom() {
+  updateRoom(bossRooms, floor);
+  bossIndex = 0;
+  floor++;
+}
+
+function generateTreasureRoom() {
+  enemiesIndex = 0;
+  updateRoom(treasureRooms, selectRandomElementOfObject(treasureRooms));
+}
+
+function generateEnemyRoom() {
+  enemiesIndex++;
+  bossIndex++;
+  updateRoom(enemyRooms, selectRandomElementOfObject(enemyRooms));
+}
+
+function selectRandomElementOfObject(obj) {
+  return [Math.floor(Math.random() * obj.length)];
 }
 
 function updateRoom(obj, index) {
@@ -115,7 +134,21 @@ function updateRoom(obj, index) {
   roomTitle.innerHTML = roomProperties.name;
   roomText.innerText = roomProperties.text;
   buttonAction.innerText = roomProperties.buttonText;
-  buttonAction.id = roomProperties.buttonText;
+  buttonAction.id = roomProperties.buttonId;
+
+  updateButton2_Dispay(obj);
+}
+
+function updateButton2_Dispay(obj) {
+  if (obj === treasureRooms) {
+    buttonAction2.style.position = "static";
+
+    if (totalCoins < roomProperties.coinCost) {
+      buttonAction.classList.add("gray");
+    }
+  } else if (obj === enemyRooms) {
+    updateEnemyHealthDisplayer();
+  }
 }
 
 // --- BUTTONS ACTIONS ---
@@ -123,30 +156,32 @@ function attack() {
   healthCalculator(-roomProperties.damage);
   enemyHealth -= weaponDamage;
 
-  if (enemyHealth <= 0) {
+  if (enemyHealth <= 0 && health > 0) {
     functionDrops();
     continueRoom();
+  } else {
+    updateEnemyHealthDisplayer();
   }
 }
 
 function treasure() {
   if (totalCoins >= roomProperties.coinCost) {
-    healthCalculator(10);
     totalCoins -= roomProperties.coinCost;
-    coinsDisplayer.innerText = `🌕 ${totalCoins}`;
+    healthCalculator(10);
     auxiliaryButton();
   } else {
-    console.log("not enough coins");
+    roomText.innerHTML = roomProperties.unableToGetText;
   }
 }
 
 function continueRoom() {
   let contRoom = deathRoom[1];
 
-  roomTitle.innerHTML = contRoom.name + roomProperties.name;
-  roomText.innerHTML = contRoom.text + roomDrops;
+  roomTitle.innerHTML = contRoom.text;
+  roomText.innerHTML = roomDrops;
   buttonAction.innerText = contRoom.buttonText;
-  buttonAction.id = contRoom.buttonText;
+  buttonAction.id = contRoom.buttonId;
+  updateEnemyHealthDisplayer();
 }
 
 /* - Drops logic - */
@@ -154,20 +189,16 @@ function functionDrops() {
   roomDrops = "";
   if (roomProperties.drops.fuel) {
     let fuelDropped = dropsProbabilities(roomProperties.drops.fuel);
-
     fuel += fuelDropped;
-    fuelDisplayer.innerText = "🛢️ ".repeat(fuel);
 
     if (fuelDropped > 0) {
-      roomDrops += " 🛢️ ".repeat(fuel);
+      roomDrops += " 🛢️ ".repeat(fuelDropped);
     }
   }
 
   if (roomProperties.drops.coins) {
     let coinsDropped = dropsProbabilities(roomProperties.drops.coins);
-
     totalCoins += coinsDropped;
-    coinsDisplayer.innerText = `🌕 ${totalCoins}`;
 
     if (coinsDropped > 0) {
       roomDrops += ` 🌕 ${coinsDropped}`;
@@ -184,17 +215,37 @@ function healthCalculator(amount) {
   health += amount;
 
   if (health <= 0) {
-    healthBar.innerText = "Health: ---";
     updateRoom(deathRoom, 0);
     return;
   }
-
-  healthBar.classList.toggle("red", health <= 30);
-  healthBar.innerText = `Health: ${health}`;
 }
 
 /* - Treasures logic - */
 function auxiliaryButton() {
   buttonAction2.style.position = "absolute";
+  buttonAction.classList.remove("gray");
   roomGenerator();
 }
+
+function updateUI() {
+  roomAndFloor.innerHTML = `Room: ${bossIndex} Floor: ${floor}`;
+  coinsDisplayer.innerText = `🌕 ${totalCoins}`;
+  fuelDisplayer.innerText = "🛢️ ".repeat(fuel);
+
+  healthBar.classList.toggle("red", health <= 30);
+  if (health <= 0) {
+    healthBar.innerText = "Health: ---";
+  } else {
+    healthBar.innerText = `Health: ${health}`;
+  }
+}
+
+function updateEnemyHealthDisplayer() {
+  enemyHealthDisplayer.innerText = `enemy health: ${enemyHealth}`;
+
+  if (enemyHealth <= 0 || isNaN(enemyHealth)) {
+    enemyHealthDisplayer.innerText = "";
+  }
+}
+
+function updateWeaponDisplayer() {}

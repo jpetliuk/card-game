@@ -23,6 +23,12 @@
   left: 20px;
 }
 
+#roomAndFloor {
+  position: absolute;
+  top: 30px;
+  left: 320px;
+}
+
 #coins {
   position: absolute;
   top: 30px;
@@ -97,14 +103,6 @@
   border: 2px inset var(--arcade-color-secundary);
 }
 
-/* #start {
-  position: absolute;
-}
-
-#treasure {
-  position: absolute;
-} */
-
 .red {
   color: red;
 }
@@ -120,4 +118,15 @@
   align-items: center;
   justify-content: center;
   gap: 20px;
+}
+
+.gray {
+  color: gray !important;
+  border: 2px inset gray !important;
+}
+
+#enemyHealth {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
